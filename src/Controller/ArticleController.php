@@ -7,7 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Psr\Log\LoggerInterface;
 use App\Service\MarkdownHelper;
-use Nexy\Slack\Client;
+use App\Service\SlackClient;
 
 class ArticleController extends AbstractController
 {
@@ -28,14 +28,10 @@ class ArticleController extends AbstractController
     /**
     * @Route("/news/{slug}", name="article_show")
     */
-    public function show($slug, MarkdownHelper $markdownHelper, Client $slack)
+    public function show($slug, MarkdownHelper $markdownHelper, SlackClient $slack)
     {
       if ($slug === 'khaaaaaan') {
-                  $message = $slack->createMessage()
-                      ->from('Khan')
-                      ->withIcon(':ghost:')
-                      ->setText('Ah, Kirk, my old friend...');
-                  $slack->sendMessage($message);
+                $slack->sendMessage('pero', 'Bok, kak si?');
               }
 
              $articleContent = <<<EOF

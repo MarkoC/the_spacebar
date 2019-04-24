@@ -7,9 +7,17 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Psr\Log\LoggerInterface;
 use App\Service\MarkdownHelper;
+use Nexy\Slack\Client;
 
 class ArticleController extends AbstractController
 {
+
+    private $isDebug;
+    public function __construct(bool $isDebug)
+    {
+        $this->isDebug = $isDebug;
+    }
+
     /**
     *@Route("/", name="app_homepage")
     */
@@ -20,10 +28,15 @@ class ArticleController extends AbstractController
     /**
     * @Route("/news/{slug}", name="article_show")
     */
-    public function show($slug, MarkdownHelper $markdownHelper)
+    public function show($slug, MarkdownHelper $markdownHelper, Client $slack)
     {
-
-
+      if ($slug === 'khaaaaaan') {
+                  $message = $slack->createMessage()
+                      ->from('Khan')
+                      ->withIcon(':ghost:')
+                      ->setText('Ah, Kirk, my old friend...');
+                  $slack->sendMessage($message);
+              }
 
              $articleContent = <<<EOF
 Spicy **jalapeno bacon** ipsum dolor amet veniam shank in dolore. Ham hock nisi landjaeger cow,

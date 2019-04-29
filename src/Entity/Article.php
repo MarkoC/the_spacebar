@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+use App\Repository\CommentRepository;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ArticleRepository")
  */
@@ -59,6 +60,7 @@ class Article
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="article")
+     * @ORM\OrderBy({"createdAt" = "DESC"})
      */
     private $comments;
 
@@ -77,7 +79,7 @@ class Article
         return $this->title;
     }
 
-    public function setTitle(string $title): self
+    public function setTite(): self
     {
         $this->title = $title;
 
@@ -173,6 +175,15 @@ class Article
     public function getComments(): Collection
     {
         return $this->comments;
+    }
+
+    /**
+     * @return Collection|Comment[]
+     */
+    public function getNonDeletedComments(): Collection
+    {
+        $criteria = CommentRepository::createNonDeletedCriteria();
+        return $this->comments->matching($criteria);
     }
 
     public function addComment(Comment $comment): self

@@ -24,7 +24,7 @@ class ArticleFixtures extends BaseFixtures
           'Amy Oort',
       ];
 
-  public function loadData(ObjectManager $manager)
+  protected function loadData(ObjectManager $manager)
     {
         $this->createMany(Article::class, 10, function(Article $article, $count)  use ($manager) {
             $article->setTitle($this->faker->randomElement(self::$articleTitles))
@@ -53,17 +53,7 @@ EOF
                 ->setHeartCount($this->faker->numberBetween(5,100))
                 ->setImageFilename($this->faker->randomElement(self::$articleImages))
             ;
-            $comment1 = new Comment();
-            $comment1->setAuthorName('Mike Ferengi');
-            $comment1->setContent('I ate a normal rock once. It did NOT taste like bacon!');
-            $comment1->setArticle($article);
-            $manager->persist($comment1);
 
-            $comment2 = new Comment();
-            $comment2->setAuthorName('Mike Ferengi');
-            $comment2->setContent('Woohoo! I\'m going on an all-asteroid diet!');
-            $comment2->setArticle($article);
-            $manager->persist($comment2);
         });
         $manager->flush();
     }

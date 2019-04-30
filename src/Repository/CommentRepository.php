@@ -6,6 +6,7 @@ use App\Entity\Comment;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Doctrine\Common\Collections\Criteria;
+use Doctrine\ORM\QueryBuilder;
 /**
  * @method Comment|null find($id, $lockMode = null, $lockVersion = null)
  * @method Comment|null findOneBy(array $criteria, array $orderBy = null)
@@ -25,7 +26,7 @@ class CommentRepository extends ServiceEntityRepository
                ->orderBy(['createdAt' => 'DESC'])
            ;
        }
-    public function findAllWithSearch(?string $term)
+    public function getWithSearchQueryBuilder(?string $term): QueryBuilder
     {
         $qb = $this->createQueryBuilder('c')
             ->innerJoin('c.article', 'a')
@@ -37,8 +38,6 @@ class CommentRepository extends ServiceEntityRepository
         }
         return $qb
             ->orderBy('c.createdAt', 'DESC')
-            ->getQuery()
-            ->getResult()
         ;
     }
     // /**

@@ -79,7 +79,7 @@ class Article
         return $this->title;
     }
 
-    public function setTite(): self
+    public function setTitle(string $title): self
     {
         $this->title = $title;
 

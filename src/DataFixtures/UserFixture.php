@@ -24,12 +24,12 @@ class UserFixture extends BaseFixture
             $user->setFirstName($this->faker->firstName);
 
             if ($this->faker->boolean) {
-                //$user->setTwitterUsername($this->faker->userName);
+                $user->setTwitterUsername($this->faker->userName);
             }
 
             $user->setPassword($this->passwordEncoder->encodePassword(
                 $user,
-                'engage'
+                '1234'
             ));
 
             //$apiToken1 = new ApiToken($user);
@@ -48,7 +48,7 @@ class UserFixture extends BaseFixture
 
             $user->setPassword($this->passwordEncoder->encodePassword(
                 $user,
-                'engage'
+                '1234'
             ));
 
             return $user;

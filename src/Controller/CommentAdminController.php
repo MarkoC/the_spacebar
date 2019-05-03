@@ -6,13 +6,17 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Knp\Component\Pager\PaginatorInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 class CommentAdminController extends AbstractController
 {
     /**
      * @Route("/admin/comment", name="comment_admin")
+      *@IsGranted("ROLE_ADMIN")
      */
     public function index(CommentRepository $repository, Request $request, PaginatorInterface $paginator)
     {
+
+        //$this->denyAccessUnlessGranted('ROLE_USER');
         $q = $request->query->get('q');
         $queryBuilder = $repository->getWithSearchQueryBuilder($q);
         $pagination = $paginator->paginate(

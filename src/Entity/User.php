@@ -2,9 +2,11 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
-
+use Symfony\Component\Serializer\Annotation\Groups;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  */
@@ -19,6 +21,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Groups("main")
      */
     private $email;
 
@@ -29,6 +32,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("main")
      */
     private $firstName;
 
@@ -39,8 +43,19 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups("main")
      */
     private $twitterUsername;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\ApiToken", mappedBy="user", orphanRemoval=true)
+     */
+    private $yes;
+
+    public function __construct()
+    {
+        $this->yes = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -149,5 +164,36 @@ class User implements UserInterface
         if ($size)
             $url .= sprintf('?size=%dx%d', $size, $size);
         return $url;
+    }
+
+    /**
+     * @return Collection|ApiToken[]
+     */
+    public function getYes(): Collection
+    {
+        return $this->yes;
+    }
+
+    public function addYe(ApiToken $ye): self
+    {
+        if (!$this->yes->contains($ye)) {
+            $this->yes[] = $ye;
+            $ye->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeYe(ApiToken $ye): self
+    {
+        if ($this->yes->contains($ye)) {
+            $this->yes->removeElement($ye);
+            // set the owning side to null (unless already changed)
+            if ($ye->getUser() === $this) {
+                $ye->setUser(null);
+            }
+        }
+
+        return $this;
     }
 }

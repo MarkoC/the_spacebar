@@ -32,10 +32,10 @@ class UserFixture extends BaseFixture
                 '1234'
             ));
 
-            //$apiToken1 = new ApiToken($user);
-            //$apiToken2 = new ApiToken($user);
-            //$manager->persist($apiToken1);
-            //$manager->persist($apiToken2);
+              $apiToken1 = new ApiToken($user);
+              $apiToken2 = new ApiToken($user);
+              $manager->persist($apiToken1);
+              $manager->persist($apiToken2);
 
             return $user;
         });
